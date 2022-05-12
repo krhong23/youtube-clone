@@ -4,10 +4,10 @@ import {useNavigate} from "react-router-dom";
 import Auth from "../../../hoc/auth";
 
 function LandingPage() {
-    useEffect(() => {
-        axios.get('/api/hello')
-            .then(response => console.log(response.data))
-    }, [])
+    // useEffect(() => {
+    //     axios.get('/api/hello')
+    //         .then(response => console.log(response.data))
+    // }, [])
 
     const navigate = useNavigate();
 

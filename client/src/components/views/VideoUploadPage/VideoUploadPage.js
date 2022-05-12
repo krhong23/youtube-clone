@@ -7,6 +7,7 @@ import axios, {Axios} from "axios";
 import Title from "antd/es/typography/Title";
 import {useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
+import Auth from "../../../hoc/auth";
 
 const PrivateOptions = [
     {value: 0, label: "Private"},
@@ -88,7 +89,7 @@ function VideoUploadPage() {
         e.preventDefault();
 
         const variables = {
-            writer: user.userData._id,
+            writer: user.user._id,
             title: VideoTitle,
             description: Description,
             privacy: Private,
@@ -98,7 +99,7 @@ function VideoUploadPage() {
             thumbnail: ThumbnailPath,
         }
 
-        Axios.post('/api/video/uploadVideo', variables)
+        axios.post('/api/video/uploadVideo', variables)
             .then(response => {
                 if (response.data.success) {
                     console.log(response.data)
@@ -187,5 +188,4 @@ function VideoUploadPage() {
     )
 }
 
-// export default Auth(VideoUploadPage, true);
-export default VideoUploadPage;
+export default Auth(VideoUploadPage, true);
