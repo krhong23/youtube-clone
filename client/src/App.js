@@ -5,7 +5,7 @@ import LandingPage from "./components/views/LandingPage/LandingPage";
 import LoginPage from "./components/views/LoginPage/LoginPage";
 import RegisterPage from "./components/views/RegisterPage/RegisterPage";
 import VideoUploadPage from "./components/views/VideoUploadPage/VideoUploadPage";
-
+import VideoDetailPage from "./components/views/VideoDetailPage/VideoDetailPage";
 
 function App() {
     return (
@@ -19,6 +19,7 @@ function App() {
                     <Route path="/login" element={<LoginPage/>}/>
                     <Route path="/register" element={<RegisterPage/>}/>
                     <Route path="/video/upload" element={<VideoUploadPage/>}/>
+                    <Route path="/video/:videoId" element={<VideoDetailPage/>}/>
                 </Routes>
             </div>
         </Router>
