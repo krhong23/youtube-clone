@@ -3,6 +3,7 @@ import {Avatar, Col, List, Row} from 'antd';
 import axios from "axios";
 import Auth from "../../../hoc/auth";
 import {useParams} from "react-router-dom";
+import SideVideo from "./Section/SideVideo";
 
 function VideoDetailPage(props) {
     // change router v6
@@ -39,6 +40,9 @@ function VideoDetailPage(props) {
                             ></List.Item.Meta>
                         </List.Item>
                     </div>
+                </Col>
+                <Col lg={6} xs={24}>
+                    <SideVideo/>
                 </Col>
             </Row>
         )
