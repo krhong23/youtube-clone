@@ -4,6 +4,7 @@ import axios from "axios";
 import Auth from "../../../hoc/auth";
 import {useParams} from "react-router-dom";
 import SideVideo from "./Section/SideVideo";
+import Subscribe from "./Section/Subscribe";
 
 function VideoDetailPage(props) {
     // change router v6
@@ -31,7 +32,11 @@ function VideoDetailPage(props) {
                     <div style={{width: '100%', padding: '3rem 4rem'}}>
                         <video style={{width: '100%'}} src={`http://localhost:5001/${VideoDetail.filePath}`} controls/>
                         <List.Item
-                            actions
+                            actions={
+                                [<Subscribe
+                                    userTo={VideoDetail.writer._id}
+                                    userFrom={localStorage.getItem('userId')}/>]
+                            }
                         >
                             <List.Item.Meta
                                 avatar={<Avatar src={VideoDetail.writer && VideoDetail.writer.image}/>}

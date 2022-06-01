@@ -20,6 +20,7 @@ app.use(cookieParser());
 const users = require('./routes/users')
 app.use('/api/users', users);
 app.use('/api/video', require('./routes/video'));
+app.use('/api/subscribe', require('./routes/subscribe'));
 
 const port = 5001
 
