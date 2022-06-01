@@ -1,13 +1,14 @@
 import React, {useState} from "react";
-import {Button, Form, Input, message} from "antd";
+import {Button, Form, Input, message, Typography} from "antd";
 import {PlusOutlined} from "@ant-design/icons";
 import TextArea from "antd/lib/input/TextArea";
 import Dropzone from "react-dropzone";
 import axios from "axios";
-import Title from "antd/es/typography/Title";
 import {useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
 import Auth from "../../../hoc/auth";
+
+const {Title} = Typography;
 
 const PrivateOptions = [
     {value: 0, label: "Private"},
@@ -35,7 +36,6 @@ function VideoUploadPage() {
     const [ThumbnailPath, setThumbnailPath] = useState("")
 
     const handleChangeTitle = (e) => {
-        console.log(e);
         setVideoTitle(e.currentTarget.value)
     }
 
@@ -54,7 +54,7 @@ function VideoUploadPage() {
         let formData = new FormData();
 
         const config = {
-            header: {'content-type': 'multipart/form-data'}
+            header: { 'content-type': 'multipart/form-data' }
         }
 
         formData.append("file", files[0])
@@ -72,7 +72,6 @@ function VideoUploadPage() {
                     axios.post('/api/video/thumbnail', variable)
                         .then(response => {
                             if (response.data.success) {
-                                console.log(response.data);
                                 setDuration(response.data.fileDuration)
                                 setThumbnailPath(response.data.thumbFilePath)
                             } else {
@@ -102,7 +101,6 @@ function VideoUploadPage() {
         axios.post('/api/video/uploadVideo', variables)
             .then(response => {
                 if (response.data.success) {
-                    console.log(response.data)
                     message.success('성공적으로 업로드하였습니다.')
                     setTimeout(() => {
                         navigate('/');
@@ -144,7 +142,7 @@ function VideoUploadPage() {
                     </Dropzone>
 
                     {
-                        ThumbnailPath &&
+                        ThumbnailPath !== "" &&
                         <div>
                             <img src={`http://localhost:5001/${ThumbnailPath}`} alt="thumbnail"/>
                         </div>

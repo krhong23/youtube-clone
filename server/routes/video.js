@@ -3,40 +3,40 @@ const router = express.Router();
 
 const {Video} = require('../models/Video');
 const multer = require('multer');
+const path = require('path');
 var ffmpeg = require('fluent-ffmpeg');
 
 //==================
 // Video
 //==================
+
+// Storage Multer Config
 let storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        // 파일 저장 위
-        cb(null, "uploads/");
+        cb(null, "uploads/")
     },
     filename: (req, file, cb) => {
-        // ex) 20220502_hi.png
         cb(null, `${Date.now()}_${file.originalname}`);
     },
     fileFilter: (req, file, cb) => {
         const ext = path.extname(file.originalname)
-        if (ext !== '.mp4') {
-            return cb(res.status(400).end('only jpg, png, mpv4 is allowed'), false);
+        if (ext !== 'mp4') {
+            return cb(res.status(400).end('only mp4 is allowed'), false);
         }
         cb(null, true)
     }
-})
+});
 
-const upload = multer({storage: storage}).single("file");
+const upload = multer({storage: storage}).single('file');
 
 router.post('/uploadfiles', (req, res) => {
-
     upload(req, res, err => {
+        console.log(res.req.file, 'hihihihihi');
         if (err) {
             return res.json({success: false, err})
         }
         return res.json({success: true, filePath: res.req.file.path, fileName: res.req.file.filename})
     })
-
 });
 
 router.post('/thumbnail', (req, res) => {
@@ -48,7 +48,6 @@ router.post('/thumbnail', (req, res) => {
     // 비디오 정보 가져오기
     ffmpeg.ffprobe(req.body.filePath, function (err, metadata) {
         console.dir(metadata);
-        console.log(metadata.format.duration);
         fileDuration = metadata.format.duration;
     });
 
@@ -64,12 +63,17 @@ router.post('/thumbnail', (req, res) => {
             console.log('Screenshots taken');
             return res.json({success: true, thumbFilePath: thumbFilePath, fileDuration: fileDuration})
         })
+        .on('error', function (err) {
+            console.log(err);
+            return res.json({success: false, err});
+        })
         .screenshots({
-            count: 3,
+            // Will take screenshots at 20%, 40%, 60% and 80% of the video
+            count: 3,    // 3개의 썸네일 생성
             folder: 'uploads/thumbnails',
             size: '320x240',
             filename: 'thumbnail-%b.png'
-        });
+        })
 
 });
 
@@ -79,9 +83,7 @@ router.post('/uploadVideo', (req, res) => {
     const video = new Video(req.body)
     video.save((err, doc) => {
         if (err) {
-            return res.json({
-                success: false, err
-            })
+            return res.json({success: false, err})
         }
         res.status(200).json({success: true})
     })
