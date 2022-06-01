@@ -13,7 +13,6 @@ export default function (CompoesedClass, reload, adminRoute = null) {
         useEffect(() => {
             dispatch(authUser())
                 .then(async response => {
-                    console.log(response)
 
                     if (await !response.payload.isAuth) {
                         // 로그인하지 않은 상태

@@ -3,7 +3,7 @@ import {Button, Form, Input, message} from "antd";
 import {PlusOutlined} from "@ant-design/icons";
 import TextArea from "antd/lib/input/TextArea";
 import Dropzone from "react-dropzone";
-import axios, {Axios} from "axios";
+import axios from "axios";
 import Title from "antd/es/typography/Title";
 import {useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
@@ -146,7 +146,7 @@ function VideoUploadPage() {
                     {
                         ThumbnailPath &&
                         <div>
-                            <img src={`http://localhost:5000/${ThumbnailPath}`} alt="thumbnail"/>
+                            <img src={`http://localhost:5001/${ThumbnailPath}`} alt="thumbnail"/>
                         </div>
                     }
                 </div>
