@@ -5,6 +5,7 @@ import Auth from "../../../hoc/auth";
 import {useParams} from "react-router-dom";
 import SideVideo from "./Section/SideVideo";
 import Subscribe from "./Section/Subscribe";
+import Comment from "./Section/Comment";
 
 function VideoDetailPage(props) {
     // change router v6
@@ -26,6 +27,10 @@ function VideoDetailPage(props) {
     })
 
     if (VideoDetail.writer) {
+
+        const subscribeButton = VideoDetail.writer._id !== localStorage.getItem('userId') && <Subscribe
+            userTo={VideoDetail.writer._id}
+            userFrom={localStorage.getItem('userId')}/>
         return (
             <Row gutter={[16, 16]}>
                 <Col lg={18} xs={24}>
@@ -33,9 +38,7 @@ function VideoDetailPage(props) {
                         <video style={{width: '100%'}} src={`http://localhost:5001/${VideoDetail.filePath}`} controls/>
                         <List.Item
                             actions={
-                                [<Subscribe
-                                    userTo={VideoDetail.writer._id}
-                                    userFrom={localStorage.getItem('userId')}/>]
+                                [subscribeButton]
                             }
                         >
                             <List.Item.Meta
@@ -44,6 +47,7 @@ function VideoDetailPage(props) {
                                 description={VideoDetail.description}
                             ></List.Item.Meta>
                         </List.Item>
+                        <Comment/>
                     </div>
                 </Col>
                 <Col lg={6} xs={24}>
