@@ -1,9 +1,56 @@
-import React from "react";
+import React, {useState} from "react";
+import axios, {Axios} from "axios";
+import {useSelector} from "react-redux";
+import {useParams} from "react-router-dom";
 
 function Comment() {
 
+    // redux 데이터 가져오기
+    const user = useSelector(state => state.user);
+    const [CommentValue, setCommentValue] = useState("")
+    const videoId = useParams().videoId;
+    const handleClick = (event) => {
+        setCommentValue(event.currentTarget.value)
+    }
+
+    const onSubmit = (event) => {
+        // Refresh 되지 않도록
+        event.preventDefault();
+
+        const variables = {
+            content: CommentValue,
+            writer: user.user._id,
+            postId: videoId
+        }
+
+        axios.post('/api/comment/saveComment', variables)
+            .then(response => {
+                if (response.data.success) {
+                    console.log(response.data)
+                } else {
+                    alert('Comment를 저장하지 못했습니다.')
+                }
+            })
+    }
     return (
-        <div>comment</div>
+        <div>
+            <br/>
+            <p>Replies</p>
+            <hr/>
+            {/* Comment Lists */}
+            {/* Root Comment Form */}
+
+            <form style={{display: 'flex'}} onSubmit>
+                <textarea
+                    style={{width: '100%', borderRadius: '5px'}}
+                    onChange={handleClick}
+                    value={CommentValue}
+                    placeholder={'코멘트를 작성해 주세요'}
+                />
+                <br/>
+                <button style={{width: '20%', height: '52px'}} onClick={onSubmit}>Submit</button>
+            </form>
+        </div>
     );
 }
 
