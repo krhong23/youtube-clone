@@ -1,9 +1,10 @@
 import React, {useState} from "react";
-import axios, {Axios} from "axios";
+import axios from "axios";
 import {useSelector} from "react-redux";
 import {useParams} from "react-router-dom";
+import SingleComment from "./SingleComment";
 
-function Comment() {
+function Comment(props) {
 
     // redux 데이터 가져오기
     const user = useSelector(state => state.user);
@@ -27,20 +28,35 @@ function Comment() {
             .then(response => {
                 if (response.data.success) {
                     console.log(response.data)
+                    props.refreshFunction(response.data.result)
+                    setCommentValue("")
                 } else {
                     alert('Comment를 저장하지 못했습니다.')
                 }
             })
     }
+
     return (
         <div>
             <br/>
             <p>Replies</p>
             <hr/>
-            {/* Comment Lists */}
-            {/* Root Comment Form */}
 
-            <form style={{display: 'flex'}} onSubmit>
+            {/* Comment Lists */}
+            {props.commentLists && props.commentLists.map((comment, index) => (
+                    (!comment.responseTo &&
+                        <SingleComment
+                            key={index}
+                            refreshFunction={props.refreshFunction}
+                            postId={videoId}
+                            comment={comment}
+                        />
+                    )
+                )
+            )}
+
+            {/* Root Comment Form */}
+            <form style={{display: 'flex'}} onSubmit={onSubmit}>
                 <textarea
                     style={{width: '100%', borderRadius: '5px'}}
                     onChange={handleClick}
