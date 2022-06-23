@@ -3,6 +3,7 @@ import axios from "axios";
 import {useSelector} from "react-redux";
 import {useParams} from "react-router-dom";
 import SingleComment from "./SingleComment";
+import ReplyComment from "./ReplyComment";
 
 function Comment(props) {
 
@@ -21,7 +22,7 @@ function Comment(props) {
         const variables = {
             content: CommentValue,
             writer: user.user._id,
-            postId: videoId
+            videoId: videoId
         }
 
         axios.post('/api/comment/saveComment', variables)
@@ -45,12 +46,19 @@ function Comment(props) {
             {/* Comment Lists */}
             {props.commentLists && props.commentLists.map((comment, index) => (
                     (!comment.responseTo &&
-                        <SingleComment
-                            key={index}
-                            refreshFunction={props.refreshFunction}
-                            postId={videoId}
-                            comment={comment}
-                        />
+                        <React.Fragment key={index}>
+                            <SingleComment
+                                videoId={videoId}
+                                comment={comment}
+                                refreshFunction={props.refreshFunction}
+                            />
+                            <ReplyComment
+                                videoId={videoId}
+                                parentCommentId={comment._id}
+                                commentLists={props.commentLists}
+                                refreshFunction={props.refreshFunction}
+                            />
+                        </React.Fragment>
                     )
                 )
             )}

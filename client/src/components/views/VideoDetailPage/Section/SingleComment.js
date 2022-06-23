@@ -1,9 +1,7 @@
 import React, {useState} from 'react';
-import {Comment, Avatar, Button, Input} from "antd";
+import {Avatar, Comment} from "antd";
 import axios from "axios";
 import {useSelector} from "react-redux";
-
-const {TextArea} = Input;
 
 function SingleComment(props) {
 
@@ -18,7 +16,7 @@ function SingleComment(props) {
         const variables = {
             content: CommentValue,
             writer: user.user._id,
-            postId: props.postId,
+            videoId: props.videoId,
             responseTo: props.comment._id
         }
 
@@ -28,6 +26,7 @@ function SingleComment(props) {
                     console.log(response.data.result)
                     props.refreshFunction(response.data.result)
                     setCommentValue("")
+                    setOpenReply(false)
                 } else {
                     alert('Comment를 저장하지 못했습니다.')
                 }
@@ -53,7 +52,8 @@ function SingleComment(props) {
                 avatar={<Avatar src={props.comment.writer.image} alt/>}
                 content={<p>{props.comment.content}</p>}
             />
-            {OpenReply &&
+            {
+                OpenReply &&
                 <form style={{display: 'flex'}} onSubmit={onSubmit}>
                 <textarea
                     style={{width: '100%', borderRadius: '5px'}}
